@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Harry Potter-ansatte</h1>
-</body>
+    <script>
+      // vi skal fetche. Vi lager en variabel uten å legge noen inni den. på lang sikt skal vi legge alle de ansatte inni denne globale variabe len. Hvis vi må bruke de ansatte mange ganger i løpet av oppgaven er det lurt å ha en global variabel hvor alle ligger.
+     
+      let hogwartStaff;
+
+      // vi skal begynne å hente inn data. fetche data. Kall funksjonen gjerne noe med fetch
+      // READ: 
+      async function fetchStaff() {
+        const hogwartsStaffRequest = await fetch(
+          "https://hp-api.onrender.com/api/characters/staff"
+        );
+       // vi tar bort denne og setter return result nedenfor istedet. return hogwartsStaffRequest;
+
+        // når vi fetcher noe kan det ta tid. da må vi inn med async og await. Vi vil at funksjonen fetchStaff skal være asynkron og tas ut av køen dersom det tar lang tid å laste ned.
+        // vi skriver async forran function
+        // vi vil at ingen ting skal lastes opp før det er ferdig. vi skriver derfor await bak fetch.
+
+        // jeg vil at funksjonens ansvar også er å returnere denne requesten, så vi skriver return under.
+
+        // når vi console.logger ut fetch.staff etter å ha gjort alt dette får vi et promise som er fullfilled. status 200 = bra. I tillegg må vi gjøre om denne responsen til et json format så vi ser hva som ligger inni: (fort gjort å glemme. får vi kun url og ikke responsen har vi glemt det.) lag en ny variabel, kall den gjerne result.
+
+        let result = await hogwartsStaffRequest.json();
+        return result;
+      }
+      console.log(fetchStaff());
+      // result variabel kan også ta tid. vi skriver derfor await etter result fordi vi har ikke lyst til å lese videre før hogwartStaffReuest er gjort om til et json format.
+
+      // NÅ HAR VI FETCHET OVER!!! :) 
+
+      // før vi går videre lager vi en hjelpefunksjon:
+      //vi vil at når vi starter programmet vil vi calle på fetch funskjonen, hengte inn alle ansatte og vise de frem. her kommer rekkefølge inn. Vi kan ikke vise frem noe før alt er ferdig. 
+
+      async function fetchAndShowStaff(){
+try {
+    hogwartStaff = await fetchStaff(); //den tomme letten skal bli til det som ligger i fetch. kan kalle på fetch funksjonen fordi den returnen (hogwartstaff) nå kommer async og await inn igjen. Vi kan ikke kalle på noe i funksjonen fetchStaff før vi vet at funksjonen er ferdig. Derfor skriver vi 
+} catch {
+    console.error("oppps...klarte ikke laste ned hs", error) // vi må legge til async før fetchAndShowStaff funskjon for å kunne bruke await
+}
+      }
+      fetchAndShowStaff();
+
+    </script>
+  </body>
 </html>
