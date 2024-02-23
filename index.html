@@ -7,18 +7,25 @@
   </head>
   <body>
     <h1>Harry Potter-ansatte</h1>
+    <input type="text" placeholder="Navn på ny lærer..." id="new-staff-txt" />
+    <input type="button" value="Legg til lærer!" id="add-btn" />
+    <div class="staff-container"></div>
     <script>
+      const staffContainer = document.querySelector(".staff-container");
+      const newStaffTxt = document.querySelector("#new-staff-txt");
+      const addBtn = document.getElementById("add-btn");
+
       // vi skal fetche. Vi lager en variabel uten å legge noen inni den. på lang sikt skal vi legge alle de ansatte inni denne globale variabe len. Hvis vi må bruke de ansatte mange ganger i løpet av oppgaven er det lurt å ha en global variabel hvor alle ligger.
-     
+
       let hogwartStaff;
 
       // vi skal begynne å hente inn data. fetche data. Kall funksjonen gjerne noe med fetch
-      // READ: 
+      // READ:
       async function fetchStaff() {
         const hogwartsStaffRequest = await fetch(
           "https://hp-api.onrender.com/api/characters/staff"
         );
-       // vi tar bort denne og setter return result nedenfor istedet. return hogwartsStaffRequest;
+        // vi tar bort denne og setter return result nedenfor istedet. return hogwartsStaffRequest;
 
         // når vi fetcher noe kan det ta tid. da må vi inn med async og await. Vi vil at funksjonen fetchStaff skal være asynkron og tas ut av køen dersom det tar lang tid å laste ned.
         // vi skriver async forran function
@@ -34,20 +41,38 @@
       console.log(fetchStaff());
       // result variabel kan også ta tid. vi skriver derfor await etter result fordi vi har ikke lyst til å lese videre før hogwartStaffReuest er gjort om til et json format.
 
-      // NÅ HAR VI FETCHET OVER!!! :) 
+      // NÅ HAR VI FETCHET OVER!!! :)
 
       // før vi går videre lager vi en hjelpefunksjon:
-      //vi vil at når vi starter programmet vil vi calle på fetch funskjonen, hengte inn alle ansatte og vise de frem. her kommer rekkefølge inn. Vi kan ikke vise frem noe før alt er ferdig. 
+      //vi vil at når vi starter programmet vil vi calle på fetch funskjonen, hengte inn alle ansatte og vise de frem. her kommer rekkefølge inn. Vi kan ikke vise frem noe før alt er ferdig.
 
-      async function fetchAndShowStaff(){
-try {
-    hogwartStaff = await fetchStaff(); //den tomme letten skal bli til det som ligger i fetch. kan kalle på fetch funksjonen fordi den returnen (hogwartstaff) nå kommer async og await inn igjen. Vi kan ikke kalle på noe i funksjonen fetchStaff før vi vet at funksjonen er ferdig. Derfor skriver vi 
-} catch {
-    console.error("oppps...klarte ikke laste ned hs", error) // vi må legge til async før fetchAndShowStaff funskjon for å kunne bruke await
-}
+      async function fetchAndShowStaff() {
+        try {
+          hogwartStaff = await fetchStaff();
+          //den tomme letten (hogwartStaff) skal bli til det som ligger i fetch. kan kalle på fetch funksjonen fordi den returnen (hogwartstaff) nå kommer async og await inn igjen. Vi kan ikke kalle på noe i funksjonen fetchStaff før vi vet at funksjonen er ferdig. Derfor skriver vi
+          showAllStaff();
+        } catch {
+         //DENNE FUNKER IKKE: console.error("oppps...klarte ikke laste ned hs", error); // vi må legge til async før fetchAndShowStaff funskjon for å kunne bruke await
+        }
       }
       fetchAndShowStaff();
+      // nå har vi fetchet arrayet og det er klar til bruk. Men vi må gjøre litt til. (kan slette console.loggen inne i tryen og catchen. vi vet at arrayet ligger der) Vi skal legge til en funksjon om viser alle ansatte: showAllStaff. legg denn inni try. dette er også en del av read. 
 
+      // limer inn 3 conster øverst på siden. 
+
+      // read for å vise frem alle ansatte, (bruk for.each for å vise alle sammen):
+      // vi sier "for hvert staff member generer vi en unik index/teller" Bra for oss senere å legge på en index siden vi skal redigere og slette senere. Det skrives med en arrow function 
+      function showAllStaff(){
+        hogwartsStaff.forEach((staffMember, index) => {
+          // vi skal nå lage et element for å vise frem elementene vi har fetchet
+          const staffCard = document.createElement("div")
+          // på lang sikt skal vi redigere og slette. men vi starter med å vise frem kortet/infoen. Vi vil at bildet av det staffmember som vises skal dukke opp. 
+          staffCard.innerHTML = `<img src="${staffMember.imgage}" style=width: 100px /> <h3>${staffMember.name}</h3>`;
+          // vi har ikke lagt til staffCard inni html, kun dom. Vi mp hente den inn med append 
+            console.log(staffMember.name);
+            staffContainer.append(staffCard);
+        }) 
+      } // noe er feil her. kommer ikke opp ansatte i arrayet. 
     </script>
   </body>
 </html>
