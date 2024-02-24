@@ -10,16 +10,18 @@
     <input type="text" placeholder="Navn på ny lærer..." id="new-staff-txt" />
     <input type="button" value="Legg til lærer!" id="add-btn" />
     <div class="staff-container"></div>
+
     <script>
       const staffContainer = document.querySelector(".staff-container");
       const newStaffTxt = document.querySelector("#new-staff-txt");
       const addBtn = document.getElementById("add-btn");
 
-      // vi skal fetche. Vi lager en variabel uten å legge noen inni den. på lang sikt skal vi legge alle de ansatte inni denne globale variabe len. Hvis vi må bruke de ansatte mange ganger i løpet av oppgaven er det lurt å ha en global variabel hvor alle ligger.
+      // vi skal fetche. Vi lager en variabel uten å legge noen inni den. på lang sikt skal vi legge alle de ansatte inni denne globale variabelen. Hvis vi må bruke de ansatte mange ganger i løpet av oppgaven er det lurt å ha en global variabel hvor alle ligger.
 
       let hogwartStaff;
 
       // vi skal begynne å hente inn data. fetche data. Kall funksjonen gjerne noe med fetch
+
       // READ:
       async function fetchStaff() {
         const hogwartsStaffRequest = await fetch(
@@ -36,9 +38,10 @@
         // når vi console.logger ut fetch.staff etter å ha gjort alt dette får vi et promise som er fullfilled. status 200 = bra. I tillegg må vi gjøre om denne responsen til et json format så vi ser hva som ligger inni: (fort gjort å glemme. får vi kun url og ikke responsen har vi glemt det.) lag en ny variabel, kall den gjerne result.
 
         let result = await hogwartsStaffRequest.json();
+
         return result;
       }
-      console.log(fetchStaff());
+      
       // result variabel kan også ta tid. vi skriver derfor await etter result fordi vi har ikke lyst til å lese videre før hogwartStaffReuest er gjort om til et json format.
 
       // NÅ HAR VI FETCHET OVER!!! :)
@@ -52,7 +55,7 @@
           //den tomme letten (hogwartStaff) skal bli til det som ligger i fetch. kan kalle på fetch funksjonen fordi den returnen (hogwartstaff) nå kommer async og await inn igjen. Vi kan ikke kalle på noe i funksjonen fetchStaff før vi vet at funksjonen er ferdig. Derfor skriver vi
           showAllStaff();
         } catch {
-         //DENNE FUNKER IKKE: console.error("oppps...klarte ikke laste ned hs", error); // vi må legge til async før fetchAndShowStaff funskjon for å kunne bruke await
+     console.error("Ops, klarte ikke laste ned Hogwart Staff", error);
         }
       }
       fetchAndShowStaff();
@@ -67,12 +70,12 @@
           // vi skal nå lage et element for å vise frem elementene vi har fetchet
           const staffCard = document.createElement("div")
           // på lang sikt skal vi redigere og slette. men vi starter med å vise frem kortet/infoen. Vi vil at bildet av det staffmember som vises skal dukke opp. 
-          staffCard.innerHTML = `<img src="${staffMember.imgage}" style=width: 100px /> <h3>${staffMember.name}</h3>`;
-          // vi har ikke lagt til staffCard inni html, kun dom. Vi mp hente den inn med append 
+          staffCard.innerHTML = `<img src="${staffMember.image}" style="width: 100px;" /> <h3>${staffMember.name}</h3>`;
+          // vi har ikke lagt til staffCard inni html, kun dom. Vi må hente den inn med append 
             console.log(staffMember.name);
             staffContainer.append(staffCard);
-        }) 
-      } // noe er feil her. kommer ikke opp ansatte i arrayet. 
+        });
+      }  
     </script>
   </body>
 </html>

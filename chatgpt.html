@@ -36,6 +36,12 @@
         if (hogwartStaff && hogwartStaff.length > 0) {
           hogwartStaff.forEach((staffMember, index) => {
             const staffCard = document.createElement("div");
+
+            // legger til en slette knapp:
+            const deleteBtn = document.createElement("button");
+            deleteBtn.innerHTML = "Slett ansatt";
+            deleteBtn.style.backgroundColor = "red";
+
             staffCard.innerHTML = `<img src="${staffMember.image}"style="width: 100px" /> <h3>${staffMember.name}</h3>`
               console.log(staffMember.name);
               staffContainer.append(staffCard);
